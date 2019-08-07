@@ -35,11 +35,15 @@ class Replacer
                     p->Childs = new Replacer*[256];
                     for(int j=0;j<256;j++)
                     {
-                        p->Childs[j] = new Replacer();
+                        p->Childs[j] = NULL;
                     }
                 }
                 unsigned char t = (unsigned char)(word[i]);
                 
+                if (!p->Childs[t])
+                {
+                    p->Childs[t] = new Replacer();
+                }
                 p = p->Childs[t];
             }
             p->WordExist = true;
@@ -80,6 +84,10 @@ class Replacer
             {
                 unsigned char c = (unsigned char)(word[dest]);
                 
+                if (!p->Childs[c])
+                {
+                    return -1;
+                }
                 if (p->Childs[c]->WordExist)
                 {
                     return dest;
